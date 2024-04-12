@@ -2,11 +2,10 @@ package com.nb150301.springredis.controller;
 
 import com.nb150301.springredis.entity.AirportEntity;
 import com.nb150301.springredis.service.AirportService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +19,8 @@ public class AirportController {
   }
 
   @GetMapping()
-  public ResponseEntity<List<AirportEntity>> getListAirport(@RequestParam List<Object> airportCodes) {
+  public ResponseEntity<List<AirportEntity>> getListAirport(
+      @RequestParam List<String> airportCodes) {
     return ResponseEntity.ok(airportService.getListAirport(airportCodes));
   }
 

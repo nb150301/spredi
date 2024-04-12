@@ -1,6 +1,6 @@
 package com.nb150301.springredis.config;
 
-import lombok.extern.slf4j.Slf4j;
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,9 +14,6 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 
-import java.time.Duration;
-
-@Slf4j
 @Configuration
 public class RedisConfig {
   @Value("${spring.data.redis.host}")
@@ -32,7 +29,8 @@ public class RedisConfig {
 
   @Bean
   @Primary
-  public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+  public RedisTemplate<Object, Object> redisTemplate(
+      RedisConnectionFactory redisConnectionFactory) {
     RedisTemplate<Object, Object> template = new RedisTemplate<>();
     RedisSerializer<Object> redisSerializer = new GenericJackson2JsonRedisSerializer();
     template.setConnectionFactory(redisConnectionFactory);
@@ -45,9 +43,10 @@ public class RedisConfig {
   @Bean
   public RedisCacheConfiguration redisCacheConfiguration() {
     return RedisCacheConfiguration.defaultCacheConfig()
-            .entryTtl(Duration.ofSeconds(30))
-            .disableCachingNullValues()
-            .serializeValuesWith(RedisSerializationContext.SerializationPair
-                    .fromSerializer(new GenericJackson2JsonRedisSerializer()));
+        .entryTtl(Duration.ofSeconds(30))
+        .disableCachingNullValues()
+        .serializeValuesWith(
+            RedisSerializationContext.SerializationPair.fromSerializer(
+                new GenericJackson2JsonRedisSerializer()));
   }
 }
